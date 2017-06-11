@@ -1,1 +1,1 @@
-FROM travisci/ci-connie
+FROM travisci/ci-connie:cs50
