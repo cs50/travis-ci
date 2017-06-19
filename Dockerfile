@@ -46,6 +46,10 @@ RUN apt-get update && \
     /opt/pyenv/bin/pyenv global 3.6.0
 ENV PATH "$PYENV_ROOT"/shims:"$PYENV_ROOT"/bin:"$PATH"
 
+# TODO
+# install check50, style50
+#RUN pip install check50 style50
+
 # install git-lfs
 # https://packagecloud.io/github/git-lfs/install#manual
 RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main" > /etc/apt/sources.list.d/github_git-lfs.list && \
