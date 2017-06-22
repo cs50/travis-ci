@@ -58,3 +58,6 @@ RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main" > /etc
     apt-get update && \
     apt-get install -y git-lfs && \
     git lfs install
+
+# install check50, submit50
+RUN pip install check50 submit50
