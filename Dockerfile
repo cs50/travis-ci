@@ -3,7 +3,7 @@ FROM travisci/ci-connie:cs50
 # environment
 ENV PYTHONDONTWRITEBYTECODE 1
 
-# packages
+# other packages
 RUN apt-get update && \
     apt-get install -y \
         build-essential \
@@ -18,7 +18,7 @@ RUN apt-get update && \
         --slave /usr/bin/clang-query clang-query /usr/bin/clang-query-3.8 \
         --slave /usr/bin/clang-rename clang-rename /usr/bin/clang-rename-3.8
 
-# install Python 3.6
+# Python 3.6
 # https://github.com/yyuu/pyenv/blob/master/README.md#installation
 # https://github.com/yyuu/pyenv/wiki/Common-build-problems
 ENV PYENV_ROOT /opt/pyenv
@@ -46,11 +46,13 @@ RUN apt-get update && \
     /opt/pyenv/bin/pyenv global 3.6.0
 ENV PATH "$PYENV_ROOT"/shims:"$PYENV_ROOT"/bin:"$PATH"
 
-# TODO
-# install check50, style50
-#RUN pip install check50 style50
+# AWS CLI 
+RUN pip3 install awscli
 
-# install git-lfs
+# FPM
+RUN gem install fpm
+
+# git-lfs
 # https://packagecloud.io/github/git-lfs/install#manual
 RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main" > /etc/apt/sources.list.d/github_git-lfs.list && \
     echo "deb-src https://packagecloud.io/github/git-lfs/ubuntu/ trusty main" >> /etc/apt/sources.list.d/github_git-lfs.list   && \
@@ -59,5 +61,7 @@ RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main" > /etc
     apt-get install -y git-lfs && \
     git lfs install
 
-# install check50, submit50
-RUN pip install check50 submit50
+# install check50, style50
+# TODO
+#RUN pip3 install check50 style50
+
