@@ -49,8 +49,8 @@ ENV PATH "$PYENV_ROOT"/shims:"$PYENV_ROOT"/bin:"$PATH"
 # AWS CLI 
 RUN pip3 install awscli
 
-# FPM
-RUN gem install fpm
+# ruby gems
+RUN gem install fpm jekyll-asciidoc jekyll-redirect-from pygments.rb
 
 # git-lfs
 # https://packagecloud.io/github/git-lfs/install#manual
