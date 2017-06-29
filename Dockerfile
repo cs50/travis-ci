@@ -8,6 +8,10 @@ RUN apt-get update && \
     apt-get install -y \
         build-essential \
         clang-3.8 \
+        debhelper \
+        devscripts \
+        dh-make \
+        lintian \
         openjdk-7-jdk \
         openjdk-7-jre-headless \
 		sqlite3 \
