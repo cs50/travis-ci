@@ -44,13 +44,31 @@ RUN apt-get update && \
     unzip -d /tmp /tmp/master.zip && \
     rm -f /tmp/master.zip && \
     mv /tmp/pyenv-master /opt/pyenv && \
-    chmod a+x /opt/pyenv/bin/pyenv && \
     /opt/pyenv/bin/pyenv install 3.6.0 && \
     /opt/pyenv/bin/pyenv rehash && \
     /opt/pyenv/bin/pyenv global 3.6.0
 ENV PATH "$PYENV_ROOT"/shims:"$PYENV_ROOT"/bin:"$PATH"
 
-# AWS CLI 
+# ruby 2.4
+ENV RBENV_ROOT /opt/rbenv
+RUN apt-get update && \
+    apt-get install -y libreadline-dev && \
+    wget -P /tmp https://github.com/rbenv/rbenv/archive/master.zip && \
+    unzip -d /tmp /tmp/master.zip && \
+    rm -f /tmp/master.zip && \
+    mv /tmp/rbenv-master /opt/rbenv && \
+    chmod a+x /opt/rbenv/bin/rbenv && \
+    wget -P /tmp https://github.com/rbenv/ruby-build/archive/master.zip && \
+    unzip -d /tmp /tmp/master.zip && \
+    rm -f /tmp/master.zip && \
+    mkdir /opt/rbenv/plugins && \
+    mv /tmp/ruby-build-master /opt/rbenv/plugins/ruby-build && \
+    /opt/rbenv/bin/rbenv install 2.4.0 && \
+    /opt/rbenv/bin/rbenv rehash && \
+    /opt/rbenv/bin/rbenv global 2.4.0
+ENV PATH "$RBENV_ROOT"/shims:"$RBENV_ROOT"/bin:"$PATH"
+
+# AWS CLI
 RUN pip3 install awscli
 
 # ruby gems
