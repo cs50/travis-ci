@@ -3,14 +3,11 @@ FROM travisci/ci-connie:cs50
 # environment
 ENV PYTHONDONTWRITEBYTECODE 1
 
-# other packages
 RUN apt-get update && \
     apt-get install -y \
-        build-essential \
         clang-3.8 \
-        openjdk-7-jdk \
-        openjdk-7-jre-headless \
-		sqlite3 \
+        python3-pip \
+        ruby-dev \
         valgrind && \
     update-alternatives --install /usr/bin/clang clang /usr/bin/clang-3.8 380 \
         --slave /usr/bin/clang++ clang++ /usr/bin/clang++-3.8 \
@@ -18,36 +15,21 @@ RUN apt-get update && \
         --slave /usr/bin/clang-query clang-query /usr/bin/clang-query-3.8 \
         --slave /usr/bin/clang-rename clang-rename /usr/bin/clang-rename-3.8
 
-# Python 3.6
-# https://github.com/yyuu/pyenv/blob/master/README.md#installation
-# https://github.com/yyuu/pyenv/wiki/Common-build-problems
-ENV PYENV_ROOT /opt/pyenv
-RUN apt-get update && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -y \
-        build-essential \
-        curl \
-        libbz2-dev \
-        libncurses5-dev \
-        libncursesw5-dev \
-        libreadline-dev \
-        libsqlite3-dev \
-        libssl-dev \
-        llvm \
-        wget \
-        xz-utils \
-        zlib1g-dev && \
-    wget -P /tmp https://github.com/yyuu/pyenv/archive/master.zip && \
-    unzip -d /tmp /tmp/master.zip && \
-    rm -f /tmp/master.zip && \
-    mv /tmp/pyenv-master /opt/pyenv && \
-    chmod a+x /opt/pyenv/bin/pyenv && \
-    /opt/pyenv/bin/pyenv install 3.6.0 && \
-    /opt/pyenv/bin/pyenv rehash && \
-    /opt/pyenv/bin/pyenv global 3.6.0
-ENV PATH "$PYENV_ROOT"/shims:"$PYENV_ROOT"/bin:"$PATH"
+# install python packages
+RUN pip3 install awscli cs50
 
-# AWS CLI 
-RUN pip3 install awscli
+# install submit50
+RUN git clone -b check50 https://github.com/cs50/submit50.git && \
+    pip3 install ./submit50/
+
+# install check50
+RUN git clone -b develop https://github.com/cs50/check50.git && \
+    pip3 install ./check50/
+
+# install libcs50
+RUN sudo add-apt-repository ppa:cs50/ppa && \
+    sudo apt-get update && \
+    sudo apt-get install -y libcs50
 
 # FPM
 RUN gem install fpm
@@ -64,4 +46,3 @@ RUN echo "deb https://packagecloud.io/github/git-lfs/ubuntu/ trusty main" > /etc
 # install check50, style50
 # TODO
 #RUN pip3 install check50 style50
-
